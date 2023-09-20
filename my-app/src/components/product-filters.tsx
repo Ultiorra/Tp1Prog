@@ -1,35 +1,41 @@
+"use client";
 import {ProductsCategoryData,ProductData} from "tp-kit/types";
-import {useForm, Checkbox, Group } from '@mantine/core';
+import {useForm} from "@mantine/form";
+import { Checkbox, Group } from '@mantine/core';
 import { TextInput } from '@mantine/core';
 import { Button} from "tp-kit/components";
 import { MagnifyingGlass } from '@phosphor-icons/react';
-export default function product_filters(categories : ProductsCategoryData[], onChange : Function){
+import {ProductFilterResult} from "../types";
+import { useCallback } from "react";
+import { type } from "os";
+type Props = {categories: ProductsCategoryData[], onChange : (param : ProductFilterResult) => void}
+export function ProductFilters( {categories, onChange} : Props ) {
+
     const form = useForm({
         initialValues: {
             search: '',
-            category: '',
+            categoriesSlug: [],
 
     }, 
-    validationRules: {
-    }
     });
     let icon =  <MagnifyingGlass />
+    const handleSubmit = useCallback((values : any) => {
+            onChange(values)
+    }, []);
     return (
         <main>
-             <form onSubmit={form.onSubmit((values : any) => onChange(values))}>
+             <form onSubmit={form.onSubmit((values : any) => (console.log("ui")) )}>
                 <TextInput
                     label="Recherche"
                     description="Recherche"
                     placeholder="Recherchez un produit"
-                    leftSectionPointerEvents="none"
-                    leftSection={icon}
-                
+                    {...form.getInputProps('search')}
                 />
                 <Checkbox.Group
-                    defaultValue={['react']}
                     label="Choisir une catégorie"
                     description="Choisir une catégorie"
-                    withAsterisk
+                    {...form.getInputProps('categoriesSlug', {type: 'checkbox'})}
+                    
                     >
                     <Group mt="xs">
                        {
@@ -37,6 +43,7 @@ export default function product_filters(categories : ProductsCategoryData[], onC
                                 return <Checkbox
                                     key={category.id}
                                     label={category.name}
+                                    
                                     value={category.name}
                                 />
                             })
@@ -44,10 +51,13 @@ export default function product_filters(categories : ProductsCategoryData[], onC
                     </Group>
                 </Checkbox.Group>
                 <Button
-                            variant="primary"
-                        >
-                        Ajouter au panier
-                    </Button>
+                    variant="ghost"
+                    onClick={() => {
+                        handleSubmit(form.values)
+                    }}
+                >
+                    Filtrer
+                </Button>
             </form>
         
 
