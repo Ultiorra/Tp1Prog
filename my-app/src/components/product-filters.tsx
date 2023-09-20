@@ -51,7 +51,7 @@ export function ProductFilters( {categories, onChange} : Props ) {
                     </Group>
                 </Checkbox.Group>
                 <Button
-                    variant="ghost"
+                    variant="outline"
                     onClick={() => {
                         handleSubmit(form.values)
                     }}
