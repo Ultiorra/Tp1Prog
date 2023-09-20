@@ -7,10 +7,11 @@ import{ProductFilters} from "./product-filters.tsx";
 import{filterProducts} from "../utils/filter-products.tsx";
 import {ProductsCategoryData,ProductData} from "tp-kit/types";
 import {ProductFilterResult} from "../types";
-type Props = {categories: ProductsCategoryData[]}
+type Props = {categories: ProductsCategoryData[], showFilters : boolean }
 import { Heading } from '../../tp-kit/components/heading';
 import { useEffect, useMemo, useState } from 'react';
-export default function ProductList({categories} : Props) {  
+import Link from 'next/link.js';
+export default function ProductList({categories, showFilters} : Props) {
     const [filters, setFilters] = useState<ProductFilterResult>
     ({
         search: "",
@@ -19,31 +20,32 @@ export default function ProductList({categories} : Props) {
 
     const filteredCategories = useMemo(() => filterProducts(categories, filters), [categories,filters])
 
-
-    
-    return (<main>
-        <ProductFilters 
-            onChange={(filters : ProductFilterResult) => {
-                setFilters(filters)
-            }}
-            categories={categories}
-            />
-         <BreadCrumbs
+    return (<main className='flex'>
+        {showFilters?
+            <ProductFilters 
+                onChange={(filters : ProductFilterResult) => {
+                    setFilters(filters)
+                }}
+                categories={categories}
+            /> : null}
+        
+        <div className="flex-1">
+        <BreadCrumbs
                 items={[
                     {
                         label: 'Home',
-                        url: '#'
+                        url: '/',   
                     },
                 ]}
             
             />
-
             {
             filteredCategories.map((category : ProductsCategoryData) => {
               return<SectionContainer
               key={category.id}
               
               >
+                <Link href={`/${category.slug}`} className='link'>
                    <Heading
                         as="h1"
                         size="md"
@@ -51,6 +53,7 @@ export default function ProductList({categories} : Props) {
                         >
                         {category.name}
                     </Heading>
+                </Link>
            
             <ProductGridLayout
                 products={category.products}
@@ -78,5 +81,6 @@ export default function ProductList({categories} : Props) {
             
             })
         }
+        </div>
     </main>
 )}

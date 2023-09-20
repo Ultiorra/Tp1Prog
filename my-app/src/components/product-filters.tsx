@@ -23,8 +23,8 @@ export function ProductFilters( {categories, onChange} : Props ) {
             onChange(values)
     }, []);
     return (
-        <main>
-             <form onSubmit={form.onSubmit((values : any) => (console.log("ui")) )}>
+        <main className="flex">
+             <form  onSubmit={form.onSubmit((values : any) => (console.log("ui")) )}>
                 <TextInput
                     label="Recherche"
                     description="Recherche"
@@ -32,12 +32,13 @@ export function ProductFilters( {categories, onChange} : Props ) {
                     {...form.getInputProps('search')}
                 />
                 <Checkbox.Group
+                   
                     label="Choisir une catégorie"
                     description="Choisir une catégorie"
                     {...form.getInputProps('categoriesSlug', {type: 'checkbox'})}
                     
                     >
-                    <Group mt="xs">
+                    <Group mt="xs"  className="flex-col">
                        {
                             categories.map((category : ProductsCategoryData) => {
                                 return <Checkbox
@@ -51,7 +52,7 @@ export function ProductFilters( {categories, onChange} : Props ) {
                     </Group>
                 </Checkbox.Group>
                 <Button
-                    variant="outline"
+                    variant="primary"
                     onClick={() => {
                         handleSubmit(form.values)
                     }}

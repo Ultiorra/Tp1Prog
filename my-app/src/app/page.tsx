@@ -8,6 +8,6 @@ import ProductList from '@/components/product-list';
 const categories = PRODUCTS_CATEGORY_DATA;
 export default function Home() {
     return (<main>
-        <ProductList categories={categories} />
+        <ProductList categories={categories} showFilters={true}/>
     </main>
 )}
