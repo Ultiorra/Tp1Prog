@@ -8,6 +8,16 @@ import ProductList from '@/components/product-list';
 const categories = PRODUCTS_CATEGORY_DATA;
 export default function Home() {
     return (<main>
+        <BreadCrumbs
+                items={[
+                    {
+                        label: 'Home',
+                        url: '/',   
+                    },
+                ]}
+
+            
+        />
         <ProductList categories={categories} showFilters={true}/>
     </main>
 )}

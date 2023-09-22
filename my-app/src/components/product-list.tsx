@@ -30,15 +30,6 @@ export default function ProductList({categories, showFilters} : Props) {
             /> : null}
         
         <div className="flex-1">
-        <BreadCrumbs
-                items={[
-                    {
-                        label: 'Home',
-                        url: '/',   
-                    },
-                ]}
-            
-            />
             {
             filteredCategories.map((category : ProductsCategoryData) => {
               return<SectionContainer
