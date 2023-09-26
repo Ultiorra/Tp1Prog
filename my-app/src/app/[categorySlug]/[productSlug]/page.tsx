@@ -7,10 +7,30 @@ import { BreadCrumbs, Button, Heading, ProductCardLayout, ProductGridLayout, Pro
 import { PRODUCTS_CATEGORY_DATA } from "tp-kit/data";
 const categories = PRODUCTS_CATEGORY_DATA;
 import {NextPageProps} from "../../../types";
+import { Metadata } from 'next';
 import {ProductsCategoryData,ProductData} from "tp-kit/types";  
 type Props = {
   categorySlug : string
   productSlug : string
+}
+
+export async function generateMetadata({params} : NextPageProps<Props>) : Promise<Metadata> {
+  const currentcategory = categories.filter(category => {
+    return category.slug == params.categorySlug
+  })[0]
+
+  if (!currentcategory) notFound();
+
+  const currentproduct = currentcategory.products.filter(product => {
+    return product.slug == params.productSlug
+  })[0]
+
+  if (!currentproduct) notFound();
+
+  return {
+    title: currentproduct.name ,
+    description: currentproduct.desc != "" ? currentproduct.desc : "Succombez pour notre " + currentproduct.name + " et commandez-le sur notre site !"
+  }
 }
 
 export default function Home({params} : NextPageProps<Props>) {
